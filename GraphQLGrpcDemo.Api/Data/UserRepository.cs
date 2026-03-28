@@ -51,4 +51,53 @@ public class UserRepository
 
         return users;
     }
+
+    public async Task<int> CreateOrderAsync(
+    int userId,
+    string productName,
+    decimal amount,
+    int quantity)
+    {
+        using var conn = GetConnection();
+
+        var sql = @"
+        INSERT INTO Orders (UserId, ProductName, Amount, Quantity, Status)
+        VALUES (@UserId, @ProductName, @Amount, @Quantity, 'Pending')";
+
+        return await conn.ExecuteAsync(sql, new
+        {
+            UserId = userId,
+            ProductName = productName,
+            Amount = amount,
+            Quantity = quantity
+        });
+    }
+
+    public async Task<int> UpdateUserAsync(
+        int id,
+        string firstName,
+        string lastName,
+        string city,
+        string state)
+    {
+        using var conn = GetConnection();
+
+        var sql = @"
+        UPDATE Users
+        SET FirstName = @FirstName,
+            LastName = @LastName,
+            City = @City,
+            State = @State,
+            UpdatedAt = GETDATE()
+        WHERE Id = @Id";
+
+        return await conn.ExecuteAsync(sql, new
+        {
+            Id = id,
+            FirstName = firstName,
+            LastName = lastName,
+            City = city,
+            State = state
+        });
+    }
 }
