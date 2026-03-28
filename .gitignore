@@ -114,3 +114,25 @@ coverage/
 # Keep SQL scripts (important for your provisioner)
 
 !Scripts/*.sql
+
+# Build output
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.temp
+
+# App settings (local only)
+**/appsettings.Development.json
+
+# Ignore API user file
+**/*.csproj.user
