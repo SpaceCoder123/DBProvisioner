@@ -1,32 +1,19 @@
 ﻿using GraphQLGrpcDemo.Api.Data;
-using GraphQLGrpcDemo.Api.Models;
+using GraphQLGrpcDemo.Api.DTO;
 
 namespace GraphQLGrpcDemo.Api.GraphQL;
 
 public class Mutation
 {
-    // 🔹 Create Order
-    public async Task<bool> CreateOrder(
-        int userId,
-        string productName,
-        decimal amount,
-        int quantity,
-        [Service] UserRepository repo)
+    public async Task<bool> CreateOrder(CreateOrderInput createOrderInput, [Service] UserRepository repo)
     {
-        await repo.CreateOrderAsync(userId, productName, amount, quantity);
+        await repo.CreateOrderAsync(createOrderInput.UserId, createOrderInput.ProductName, createOrderInput.Amount, createOrderInput.Quantity);
         return true;
     }
 
-    // 🔹 Update User
-    public async Task<bool> UpdateUser(
-        int id,
-        string firstName,
-        string lastName,
-        string city,
-        string state,
-        [Service] UserRepository repo)
+    public async Task<bool> UpdateUser(UpdateUserInput input, [Service] UserRepository repo)
     {
-        await repo.UpdateUserAsync(id, firstName, lastName, city, state);
+        await repo.UpdateUserAsync(input.Id, input.FirstName, input.LastName, input.City, input.State);
         return true;
     }
 }
