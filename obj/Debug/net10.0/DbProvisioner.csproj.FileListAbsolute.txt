@@ -67,3 +67,4 @@ D:\DBProvisioner\DbProvisioner\obj\Debug\net10.0\DbProvisioner.genruntimeconfig.
 D:\DBProvisioner\DbProvisioner\obj\Debug\net10.0\ref\DbProvisioner.dll
 D:\DBProvisioner\DbProvisioner\bin\Debug\net10.0\Scripts\001_CreateTables.sql
 D:\DBProvisioner\DbProvisioner\bin\Debug\net10.0\Scripts\002_SeedData.sql
+D:\DBProvisioner\DbProvisioner\obj\Debug\net10.0\DbProvisioner.sourcelink.json

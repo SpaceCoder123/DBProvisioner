@@ -35,4 +35,20 @@ public class UserRepository
 
         return await conn.QueryAsync<Order>(sql, new { UserId = userId });
     }
+
+    public async Task<IEnumerable<User>> GetUsersWithOrdersAsync()
+    {
+        using var conn = GetConnection();
+
+        var users = (await conn.QueryAsync<User>("SELECT * FROM Users")).ToList();
+
+        var orders = (await conn.QueryAsync<Order>("SELECT * FROM Orders")).ToList();
+
+        foreach (var user in users)
+        {
+            user.Orders = orders.Where(o => o.UserId == user.Id).ToList();
+        }
+
+        return users;
+    }
 }

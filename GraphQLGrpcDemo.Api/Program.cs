@@ -1,5 +1,5 @@
 using GraphQLGrpcDemo.Api.Data;
-
+using GraphQLGrpcDemo.Api.GraphQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserRepository>();
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>();
 
 var app = builder.Build();
 
@@ -16,7 +19,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
+app.MapGraphQL();   
 app.UseHttpsRedirection();
 
 var summaries = new[]

@@ -1,3 +1,5 @@
+using GraphQLGrpcDemo.Api.Models;
+
 namespace GraphQLGrpcDemo.Api.Models;
 
 public class User
@@ -16,6 +18,8 @@ public class User
     public string State { get; set; }
 
     public bool IsActive { get; set; }
+
+    public List<Order> Orders {get; set;} = new();
 
     public DateTime CreatedAt { get; set; }
 }

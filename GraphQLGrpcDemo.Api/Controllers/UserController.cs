@@ -5,11 +5,11 @@ namespace GraphQLGrpcDemo.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UsersController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly UserRepository _repo;
 
-    public UsersController(UserRepository repo)
+    public UserController(UserRepository repo)
     {
         _repo = repo;
     }
@@ -17,7 +17,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
-        var users = await _repo.GetUsersAsync();
+        var users = await _repo.GetUsersWithOrdersAsync();
         return Ok(users);
     }
 

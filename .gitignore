@@ -1,0 +1,116 @@
+# =========================
+
+# .NET Solution (API + Console)
+
+# =========================
+
+# Build output
+
+**/bin/
+**/obj/
+
+# Visual Studio
+
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+
+.vscode/
+
+# Rider / JetBrains
+
+.idea/
+
+# Logs
+
+*.log
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# NuGet
+
+*.nupkg
+.nuget/
+packages/
+
+# Publish output
+
+publish/
+
+# =========================
+
+# API Project Specific
+
+# =========================
+
+# Environment configs (DO NOT COMMIT)
+
+GraphQLGrpcDemo.Api/appsettings.Development.json
+
+# Optional local configs
+
+GraphQLGrpcDemo.Api/appsettings.Local.json
+
+# User-specific files
+
+GraphQLGrpcDemo.Api/*.csproj.user
+
+# =========================
+
+# Security / Secrets
+
+# =========================
+
+*.pfx
+*.key
+secrets.json
+
+# =========================
+
+# Test / Coverage
+
+# =========================
+
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# =========================
+
+# Temp / Backup
+
+# =========================
+
+*.tmp
+*.temp
+*.bak
+
+# =========================
+
+# Database files (if any)
+
+# =========================
+
+*.mdf
+*.ldf
+
+# =========================
+
+# KEEP IMPORTANT FILES
+
+# =========================
+
+!appsettings.json
+!GraphQLGrpcDemo.Api/appsettings.json
+
+# Keep SQL scripts (important for your provisioner)
+
+!Scripts/*.sql
