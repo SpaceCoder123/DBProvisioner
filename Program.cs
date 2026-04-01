@@ -48,9 +48,6 @@ async Task EnsureDatabaseCreated(string connStr)
 
 async Task RunScripts(string connStr)
 {
-    using var conn = new SqlConnection(connStr);
-    await conn.OpenAsync();
-
     var scriptsPath = Path.Combine(Directory.GetCurrentDirectory(), "Scripts");
 
     if (!Directory.Exists(scriptsPath))
@@ -62,17 +59,37 @@ async Task RunScripts(string connStr)
     var scripts = Directory.GetFiles(scriptsPath, "*.sql")
                            .OrderBy(x => x)
                            .ToList();
+    var failedScripts = new List<string>();
 
     foreach (var scriptFile in scripts)
     {
         var scriptName = Path.GetFileName(scriptFile);
         Console.WriteLine($"Executing {scriptName}...");
-    
-        var script = await File.ReadAllTextAsync(scriptFile);
 
-        using var cmd = new SqlCommand(script, conn);
-        await cmd.ExecuteNonQueryAsync();
+        try
+        {
+            var script = await File.ReadAllTextAsync(scriptFile);
 
-        Console.WriteLine($"{scriptName} executed.");
+            using var conn = new SqlConnection(connStr);
+            await conn.OpenAsync();
+
+            using var cmd = new SqlCommand(script, conn);
+            await cmd.ExecuteNonQueryAsync();
+
+            Console.WriteLine($"{scriptName} executed.");
+        }
+        catch (Exception ex)
+        {
+            failedScripts.Add(scriptName);
+            Console.WriteLine($"{scriptName} failed: {ex.Message}");
+        }
     }
+
+    if (failedScripts.Count == 0)
+    {
+        Console.WriteLine("All scripts executed.");
+        return;
+    }
+
+    Console.WriteLine($"Completed with {failedScripts.Count} failed script(s): {string.Join(", ", failedScripts)}");
 }

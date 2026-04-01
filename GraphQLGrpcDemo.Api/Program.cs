@@ -1,5 +1,6 @@
 using GraphQLGrpcDemo.Api.Data;
 using GraphQLGrpcDemo.Api.GraphQL;
+using GraphQLGrpcDemo.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddSingleton<UserExportStore>();
+builder.Services.AddSingleton<UserExportQueue>();
+builder.Services.AddHostedService<UserExportBackgroundService>();
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
