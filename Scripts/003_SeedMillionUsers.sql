@@ -1,6 +1,6 @@
 SET NOCOUNT ON;
 
-DECLARE @TargetRows INT = 100000;
+DECLARE @TargetRows INT = 1000000;
 DECLARE @ExistingRows INT;
 
 SELECT @ExistingRows = COUNT(*)
