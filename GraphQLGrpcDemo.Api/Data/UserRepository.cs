@@ -1,6 +1,8 @@
 using Dapper;
-using Microsoft.Data.SqlClient;
 using GraphQLGrpcDemo.Api.Models;
+using HotChocolate.Utilities;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Caching.Memory;
 using System.Runtime.CompilerServices;
 
 namespace GraphQLGrpcDemo.Api.Data;
@@ -9,9 +11,11 @@ public class UserRepository
 {
     private const int DefaultCommandTimeoutSeconds = 120;
     private readonly IConfiguration _config;
+    private readonly IMemoryCache _memoryCache;
 
-    public UserRepository(IConfiguration config)
+    public UserRepository(IConfiguration config, IMemoryCache memoryCache)
     {
+        _memoryCache = memoryCache;
         _config = config;
     }
 
@@ -133,6 +137,12 @@ public class UserRepository
 
     public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId)
     {
+        var cacheKey = $"orders:user:{userId}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out IEnumerable<Order> cachedOrders))
+        {
+            return cachedOrders;
+        }
         using var conn = GetConnection();
 
         var sql = @"SELECT * FROM Orders WHERE UserId = @UserId";
@@ -141,6 +151,16 @@ public class UserRepository
             sql,
             new { UserId = userId },
             commandTimeout: DefaultCommandTimeoutSeconds);
+
+        var orders = (await conn.QueryAsync<Order>(command)).ToList();
+
+        var cacheOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5),
+            SlidingExpiration = TimeSpan.FromMinutes(2)
+        };
+
+        _memoryCache.Set(cacheKey, orders, cacheOptions);
 
         return await conn.QueryAsync<Order>(command);
     }
